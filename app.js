@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var request = require('request')
-
+var fs = require('fs');
 var app = express();
 var router = express.Router();
 
@@ -22,6 +22,17 @@ router.post('/', function(req, res) {
 
 // Returns the open pull requests for the joeldudley/test GitHub repo.
 router.get('/', function(_, res) {
+
+    fs.readFile('form.html', function (err, data) {
+        res.writeHead(200, {
+            'Content-Type': 'text/html',
+                'Content-Length': data.length
+        });
+        res.write(data);
+        res.end();
+    });
+
+    /*
     var options = {
         url: 'https://api.github.com/repos/davidleeuk/test/pulls?state=open',
         headers: {
@@ -32,6 +43,8 @@ router.get('/', function(_, res) {
     request(options, function (_, _, body) {
         res.send(body);
     });
+
+    */
 })
 
 // The API can also be used to close a pull request, using the following
